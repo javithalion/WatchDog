@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F1CF7D29-3160-4C26-9467-B66BF721B720}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WatchDogService</RootNamespace>
     <AssemblyName>WatchDogService</AssemblyName>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\ConsoleAction.cs" />
+    <Compile Include="Model\ContingenceAction.cs" />
+    <Compile Include="Model\LogAction.cs" />
     <Compile Include="Model\StatusWatcher.cs" />
     <Compile Include="Model\WindowsServiceWatcher.cs" />
     <Compile Include="Services\Implementations\ConfigurationService.cs" />
