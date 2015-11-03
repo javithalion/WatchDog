@@ -5,23 +5,19 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WatchDogService.Model
+namespace WatchDogService.Watchers
 {
     public class WindowsServiceWatcher : StatusWatcher
     {
         private readonly string _serviceToMonitor;
 
-        public WindowsServiceWatcher(string serviceNameToMonitor, string name = "WindowsServiceWatcher")
+        public WindowsServiceWatcher(string serviceNameToMonitor, int refreshPeriodInSeconds, string name = "WindowsServiceWatcher")
+            : base(refreshPeriodInSeconds, name)
         {
-            Identifier = Guid.NewGuid();
-            Name = name;
-            RefreshPeriod = TimeSpan.FromSeconds(30);
-            CreationDate = DateTime.Now;
-
             _serviceToMonitor = serviceNameToMonitor;
         }
 
-        public override string GetWatcherInformation()
+        public override string GetWathcDescription()
         {
             return string.Format("{0} Windows Service", _serviceToMonitor);
         }
@@ -43,6 +39,6 @@ namespace WatchDogService.Model
             {
                 LastCheck = DateTime.Now;
             }
-        }       
+        }
     }
 }

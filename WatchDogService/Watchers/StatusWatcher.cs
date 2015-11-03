@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WatchDogService.ContingenceActions;
 
-
-namespace WatchDogService.Model
+namespace WatchDogService.Watchers
 {
     public abstract class StatusWatcher
     {
@@ -20,6 +20,14 @@ namespace WatchDogService.Model
         private Timer _monitorTimer;
         private ICollection<ContingenceAction> _contingenceActions = new List<ContingenceAction>();
 
+        public StatusWatcher(int refreshPeriodInSeconds, string name = "Watcher")
+        {
+            Identifier = Guid.NewGuid();
+            Name = name;
+            RefreshPeriod = TimeSpan.FromSeconds(refreshPeriodInSeconds);
+            CreationDate = DateTime.Now;
+        }
+
         public void Start()
         {
             _monitorTimer = new Timer(
@@ -28,7 +36,7 @@ namespace WatchDogService.Model
                     CheckStatus(e);
                     if (Status != Status.Working)
                         foreach (var action in _contingenceActions)
-                            action.Execute(this);
+                            action.Execute();
                 });
 
             _monitorTimer.Change(1000, (int)RefreshPeriod.TotalMilliseconds);
@@ -40,7 +48,7 @@ namespace WatchDogService.Model
         }
 
         protected abstract void CheckStatus(object state);
-        public abstract string GetWatcherInformation();
+        public abstract string GetWathcDescription();
     }
 
     public enum Status

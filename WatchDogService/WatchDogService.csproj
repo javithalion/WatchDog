@@ -47,11 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ConsoleAction.cs" />
-    <Compile Include="Model\ContingenceAction.cs" />
-    <Compile Include="Model\LogAction.cs" />
-    <Compile Include="Model\StatusWatcher.cs" />
-    <Compile Include="Model\WindowsServiceWatcher.cs" />
+    <Compile Include="ContingenceActions\ConsoleAction.cs" />
+    <Compile Include="ContingenceActions\ContingenceAction.cs" />
+    <Compile Include="ContingenceActions\LogFileAction.cs" />
+    <Compile Include="Watchers\StatusWatcher.cs" />
+    <Compile Include="Watchers\WindowsServiceWatcher.cs" />
     <Compile Include="Services\Implementations\ConfigurationService.cs" />
     <Compile Include="Services\Interfaces\IConfigurationService.cs" />
     <Compile Include="WatchDogService.cs">

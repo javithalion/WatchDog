@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WatchDogService.Model;
+using WatchDogService.Watchers;
 
 namespace WatchDogService.Services.Interfaces
 {
