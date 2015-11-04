@@ -18,23 +18,19 @@ namespace WatchDogService.Watchers
             return string.Format("{0} Windows Service", _serviceToMonitor);
         }
 
-        protected override void CheckStatus(object state)
+        protected override Status CheckStatus(object state)
         {
             try
             {
                 var serviceController = new ServiceController(_serviceToMonitor);
-                Status = serviceController.Status == ServiceControllerStatus.Running ?
+                return serviceController.Status == ServiceControllerStatus.Running ?
                     Status.Working :
                     Status.NotWorking;
             }
             catch
             {
-                Status = Status.NotWorking;
-            }
-            finally
-            {
-                LastCheck = DateTime.Now;
-            }
+                return Status.NotWorking;
+            }            
         }
     }
 }

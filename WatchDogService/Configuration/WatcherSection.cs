@@ -32,9 +32,9 @@ namespace WatchDogService.Configuration
 
         [System.Configuration.ConfigurationProperty("ContingenceActionsSection", IsDefaultCollection = false)]
         [ConfigurationCollection(typeof(ContingenceActionsSection),
-        AddItemName = "add",
-        ClearItemsName = "clear",
-        RemoveItemName = "remove")]
+        AddItemName = "Action",
+        ClearItemsName = "clearAction",
+        RemoveItemName = "removeAction")]
         public ContingenceActionsSection ContingenceActions
         {
             get
@@ -49,6 +49,13 @@ namespace WatchDogService.Configuration
         {
             get { return (string)this["ServiceNameToMonitor"]; }
             set { this["ServiceNameToMonitor"] = value; }
+        }
+
+        [ConfigurationProperty("HostAddress", DefaultValue = "Watcher", IsRequired = false, IsKey = false)]
+        public string HostAddress
+        {
+            get { return (string)this["HostAddress"]; }
+            set { this["HostAddress"] = value; }
         }
     }
 
