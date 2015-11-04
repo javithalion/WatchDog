@@ -3,33 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WatchDogService.Watchers;
-using WatchDogService.Services.Interfaces;
-using WatchDogService.ContingenceActions;
-using WatchDogService.Configuration;
+using WatchDog.Watchers;
+using WatchDog.Services.Interfaces;
+using WatchDog.ContingenceActions;
+using WatchDog.Configuration;
 using System.Reflection;
 using System.Globalization;
 
-namespace WatchDogService.Services.Implementations
+namespace WatchDog.Services.Implementations
 {
     public class ConfigurationService : IConfigurationService
     {
         public IEnumerable<StatusWatcher> GetAllWatchers()
         {
-            var result = new List<StatusWatcher>();
-            var config = (WatchDogConfigurationSection)System.Configuration.ConfigurationManager.GetSection("watchDogConfigurationSection");
-
-            for (int i = 0; i < config.Watchers.Count; i++)
+            try
             {
-                var configWatcher = config.Watchers[i];
-                var watcher = BuildWatcherFromConfiguration(configWatcher);
+                var result = new List<StatusWatcher>();
+                var config = (WatchDogConfigurationSection)System.Configuration.ConfigurationManager.GetSection("watchDogConfigurationSection");
 
-                var actionsForWatcher = BuildActionsForWatcher(watcher, configWatcher);
-                watcher.AddContingenceActions(actionsForWatcher);
+                for (int i = 0; i < config.Watchers.Count; i++)
+                {
+                    var configWatcher = config.Watchers[i];
+                    var watcher = BuildWatcherFromConfiguration(configWatcher);
 
-                result.Add(watcher);
+                    var actionsForWatcher = BuildActionsForWatcher(watcher, configWatcher);
+                    watcher.AddContingenceActions(actionsForWatcher);
+
+                    result.Add(watcher);
+                }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                throw new Exception("There was a problem configuring WatchDogService. See inner exception for futher details.", ex);
+            }
         }
 
         private StatusWatcher BuildWatcherFromConfiguration(WatcherSection configWatcher)
@@ -49,7 +56,7 @@ namespace WatchDogService.Services.Implementations
                     );
             }
             return Activator.CreateInstance(type, listOfParameters.ToArray()) as StatusWatcher;
-        }      
+        }
 
         private IList<ContingenceAction> BuildActionsForWatcher(StatusWatcher watcher, WatcherSection configWatcher)
         {

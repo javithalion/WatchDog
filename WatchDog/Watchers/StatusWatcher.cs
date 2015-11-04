@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using WatchDogService.ContingenceActions;
+using WatchDog.ContingenceActions;
 
-namespace WatchDogService.Watchers
+namespace WatchDog.Watchers
 {
     public abstract class StatusWatcher
     {
@@ -32,6 +32,7 @@ namespace WatchDogService.Watchers
                 {
                     Status = CheckStatus(e);
                     LastCheck = DateTime.Now;
+
                     if (Status != Status.Working)
                         foreach (var action in _contingenceActions)
                             action.Execute();

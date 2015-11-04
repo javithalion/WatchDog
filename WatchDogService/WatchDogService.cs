@@ -1,8 +1,8 @@
 ﻿using System.ServiceProcess;
-using WatchDogService.Services.Implementations;
-using WatchDogService.Services.Interfaces;
+using WatchDog.Services.Implementations;
+using WatchDog.Services.Interfaces;
 
-namespace WatchDogService
+namespace WatchDog
 {
     public partial class WatchDogService : ServiceBase
     {

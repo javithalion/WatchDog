@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1CF7D29-3160-4C26-9467-B66BF721B720}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D788C30D-A4CC-4F43-8B72-78DD365FDE27}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WatchDogService</RootNamespace>
-    <AssemblyName>WatchDogService</AssemblyName>
+    <RootNamespace>WatchDog</RootNamespace>
+    <AssemblyName>WatchDog</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,11 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
@@ -47,25 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WatchDogService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="WatchDogService.Designer.cs">
-      <DependentUpon>WatchDogService.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="Configuration\ContingenceActionSection.cs" />
+    <Compile Include="Configuration\ContingenceActionsSection.cs" />
+    <Compile Include="Configuration\WatchDogConfigurationSection.cs" />
+    <Compile Include="Configuration\WatcherSection.cs" />
+    <Compile Include="Configuration\WatchersSection.cs" />
+    <Compile Include="ContingenceActions\ConsoleAction.cs" />
+    <Compile Include="ContingenceActions\ContingenceAction.cs" />
+    <Compile Include="ContingenceActions\LogFileAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WatchDog\WatchDog.csproj">
-      <Project>{d788c30d-a4cc-4f43-8b72-78dd365fde27}</Project>
-      <Name>WatchDog</Name>
-    </ProjectReference>
+    <Compile Include="Services\Implementations\ConfigurationService.cs" />
+    <Compile Include="Services\Interfaces\IConfigurationService.cs" />
+    <Compile Include="Watchers\HostWatcher.cs" />
+    <Compile Include="Watchers\StatusWatcher.cs" />
+    <Compile Include="Watchers\WindowsServiceWatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WatchDogService.Watchers;
+using WatchDog.Watchers;
 
-namespace WatchDogService.Services.Interfaces
+namespace WatchDog.Services.Interfaces
 {
     public interface IConfigurationService
     {

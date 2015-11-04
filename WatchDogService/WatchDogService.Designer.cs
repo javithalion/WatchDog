@@ -1,4 +1,4 @@
-﻿namespace WatchDogService
+﻿namespace WatchDog
 {
     partial class WatchDogService
     {

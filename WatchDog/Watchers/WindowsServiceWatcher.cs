@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceProcess;
 
-namespace WatchDogService.Watchers
+namespace WatchDog.Watchers
 {
     public class WindowsServiceWatcher : StatusWatcher
     {

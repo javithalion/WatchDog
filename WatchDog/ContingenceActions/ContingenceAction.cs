@@ -1,7 +1,7 @@
 ﻿using System;
-using WatchDogService.Watchers;
+using WatchDog.Watchers;
 
-namespace WatchDogService.ContingenceActions
+namespace WatchDog.ContingenceActions
 {
     public abstract class ContingenceAction
     {

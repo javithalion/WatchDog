@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using WatchDogService.Watchers;
+using WatchDog.Watchers;
 
-namespace WatchDogService.ContingenceActions
+namespace WatchDog.ContingenceActions
 {
     public class LogFileAction : ContingenceAction
     {

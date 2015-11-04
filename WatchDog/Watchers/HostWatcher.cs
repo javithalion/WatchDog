@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WatchDogService.Watchers
+namespace WatchDog.Watchers
 {
     public class HostWatcher : StatusWatcher
     {

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
-namespace WatchDogService.Configuration
+namespace WatchDog.Configuration
 {
-    public class WatchersSection : ConfigurationElementCollection
+    public class ContingenceActionsSection : ConfigurationElementCollection
     {
-        public WatcherSection this[int index]
+        public ContingenceActionSection this[int index]
         {
             get
             {
-                return base.BaseGet(index) as WatcherSection;
+                return base.BaseGet(index) as ContingenceActionSection;
             }
             set
             {
@@ -25,9 +20,9 @@ namespace WatchDogService.Configuration
             }
         }
 
-        public new WatcherSection this[string responseString]
+        public new ContingenceActionSection this[string responseString]
         {
-            get { return (WatcherSection)BaseGet(responseString); }
+            get { return (ContingenceActionSection)BaseGet(responseString); }
             set
             {
                 if (BaseGet(responseString) != null)
@@ -40,17 +35,17 @@ namespace WatchDogService.Configuration
 
         protected override ConfigurationElement CreateNewElement()
         {
-            return new WatcherSection();
+            return new ContingenceActionSection();
         }
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((WatcherSection)element).Name;
+            return ((ContingenceActionSection)element).Name;
         }
 
-        public void Remove(WatcherSection watcher)
+        public void Remove(ContingenceActionSection ovenConfig)
         {
-            BaseRemove(watcher.Name);
+            BaseRemove(ovenConfig.Name);
         }
 
         public void RemoveAt(int index)
