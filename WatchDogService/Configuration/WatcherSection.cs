@@ -23,6 +23,13 @@ namespace WatchDogService.Configuration
             set { this["RefreshTimeInSeconds"] = value; }
         }
 
+        [ConfigurationProperty("Type", DefaultValue = "Watcher", IsRequired = true, IsKey = false)]
+        public string Type
+        {
+            get { return (string)this["Type"]; }
+            set { this["Type"] = value; }
+        }
+
         [System.Configuration.ConfigurationProperty("ContingenceActionsSection", IsDefaultCollection = false)]
         [ConfigurationCollection(typeof(ContingenceActionsSection),
         AddItemName = "add",
@@ -36,16 +43,15 @@ namespace WatchDogService.Configuration
                 return o as ContingenceActionsSection;
             }
         }
-    }
 
-
-    public class WindowsServiceWatcherSection : WatcherSection
-    {
-        [ConfigurationProperty("ServiceName", DefaultValue = "Watcher", IsRequired = true, IsKey = false)]
-        public string ServiceName
+        [ConfigurationProperty("ServiceNameToMonitor", DefaultValue = "Watcher", IsRequired = false, IsKey = false)]
+        public string ServiceNameToMonitor
         {
-            get { return (string)this["ServiceName"]; }
-            set { this["ServiceName"] = value; }
-        }       
+            get { return (string)this["ServiceNameToMonitor"]; }
+            set { this["ServiceNameToMonitor"] = value; }
+        }
     }
+
+
+    
 }

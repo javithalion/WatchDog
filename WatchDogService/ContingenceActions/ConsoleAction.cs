@@ -5,17 +5,17 @@ namespace WatchDogService.ContingenceActions
 {
     public class ConsoleAction : ContingenceAction
     {
-        private readonly string _formatString;
+        private readonly string _messageLayout;
 
-        public ConsoleAction(StatusWatcher statusWatcher, string formatString ,string name = "ConsoleAction")
+        public ConsoleAction(StatusWatcher statusWatcher, string messageLayout, string name = "ConsoleAction")
             :base(statusWatcher,name)
         {
-            _formatString = formatString;
+            _messageLayout = messageLayout;
         }
 
         public override void Execute()
         {
-            var result = _formatString.ToLower();
+            var result = _messageLayout.ToLower();
             result = result.Replace(@"%date", DateTime.Now.ToString());
             result = result.Replace(@"%name", _statusWatcher.GetWathcDescription());
 

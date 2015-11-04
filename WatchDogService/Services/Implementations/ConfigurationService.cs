@@ -7,6 +7,8 @@ using WatchDogService.Watchers;
 using WatchDogService.Services.Interfaces;
 using WatchDogService.ContingenceActions;
 using WatchDogService.Configuration;
+using System.Reflection;
+using System.Globalization;
 
 namespace WatchDogService.Services.Implementations
 {
@@ -18,48 +20,59 @@ namespace WatchDogService.Services.Implementations
             var result = new List<StatusWatcher>();
             var config = (WatchDogConfigurationSection)System.Configuration.ConfigurationManager.GetSection("watchDogConfigurationSection");
 
-            WindowsServiceWatcher serviceWatcherAux;
-            ContingenceAction contingenceActionAux;
-            for (int i = 0; i < config.WindowsServiceWatchers.Count; i++)
+            for (int i = 0; i < config.Watchers.Count; i++)
             {
-                serviceWatcherAux =
-                    new WindowsServiceWatcher(
-                    config.WindowsServiceWatchers[i].ServiceName,
-                    Convert.ToInt32(config.WindowsServiceWatchers[i].RefreshTimeInSeconds),
-                    config.WindowsServiceWatchers[i].Name);
+                var configWatcher = config.Watchers[i];
 
-                for (int j = 0; j < config.WindowsServiceWatchers[i].ContingenceActions.Count; j++)
+                var type = Type.GetType(configWatcher.Type);
+                ConstructorInfo ctor = type.GetConstructors().FirstOrDefault();
+
+                var listOfParameters = new List<object>();
+                var properties = configWatcher.GetType().GetProperties();
+                foreach (var parameter in ctor.GetParameters())
                 {
-                    var contingenceActionFromConfig = config.WindowsServiceWatchers[i].ContingenceActions[j];
+                    listOfParameters.Add(
+                        Convert.ChangeType(
+                        properties.FirstOrDefault(x => x.Name.ToLower() == parameter.Name.ToLower()).GetValue(configWatcher),
+                        parameter.ParameterType,
+                        CultureInfo.InvariantCulture)
+                        );
+                }
 
-                    switch (contingenceActionFromConfig.Type)
+                StatusWatcher watcher = Activator.CreateInstance(type, listOfParameters.ToArray()) as StatusWatcher;
+
+
+                for (int j = 0; j < configWatcher.ContingenceActions.Count; j++)
+                {
+                    var contingenceActionFromConfig = configWatcher.ContingenceActions[j];
+
+                    type = Type.GetType(contingenceActionFromConfig.Type);
+                    ctor = type.GetConstructors().FirstOrDefault();
+
+                    listOfParameters = new List<object>();
+                    listOfParameters.Add(watcher);
+
+                    properties = contingenceActionFromConfig.GetType().GetProperties();
+                    foreach (var parameter in ctor.GetParameters())
                     {
-                        case "LogFileAction":
-                            contingenceActionAux = CreateLogAction(serviceWatcherAux, contingenceActionFromConfig);
-                            break;
-                        case "ConsoleAction":
-                            contingenceActionAux = CreateConsoleAction(serviceWatcherAux, contingenceActionFromConfig);
-                            break;
-                        default:
-                            throw new Exception();
+                        if (parameter.Name.ToLower() != "statuswatcher")
+                            listOfParameters.Add(
+                                Convert.ChangeType(
+                                properties.FirstOrDefault(x => x.Name.ToLower() == parameter.Name.ToLower()).GetValue(contingenceActionFromConfig),
+                                parameter.ParameterType,
+                                CultureInfo.InvariantCulture)
+                                );
                     }
 
-                    serviceWatcherAux.AddContingenceAction(contingenceActionAux);
+                    ContingenceAction action = Activator.CreateInstance(type, listOfParameters.ToArray()) as ContingenceAction;
+                    watcher.AddContingenceAction(action);
                 }
-                result.Add(serviceWatcherAux);
-            }
 
+                result.Add(watcher);
+            }
             return result;
         }
 
-        private static ContingenceAction CreateConsoleAction(WindowsServiceWatcher serviceWatcherAux, ContingenceActionSection contingenceActionFromConfig)
-        {
-            return new ConsoleAction(serviceWatcherAux, contingenceActionFromConfig.MessageLayout, contingenceActionFromConfig.Name);
-        }
 
-        private static ContingenceAction CreateLogAction(WindowsServiceWatcher serviceWatcherAux, ContingenceActionSection contingenceActionFromConfig)
-        {
-            return new LogFileAction(serviceWatcherAux, contingenceActionFromConfig.FileName, contingenceActionFromConfig.MessageLayout, contingenceActionFromConfig.Name);
-        }
     }
 }

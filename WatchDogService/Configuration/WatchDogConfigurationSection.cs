@@ -10,17 +10,17 @@ namespace WatchDogService.Configuration
     public class WatchDogConfigurationSection : ConfigurationSection
     {          
 
-        [System.Configuration.ConfigurationProperty("WindowsServiceWatchersSection", IsDefaultCollection = false)]
-        [ConfigurationCollection(typeof(WindowsServiceWatchersSection),
+        [System.Configuration.ConfigurationProperty("Watchers", IsDefaultCollection = false)]
+        [ConfigurationCollection(typeof(WatchersSection),
         AddItemName = "add",
         ClearItemsName = "clear",
         RemoveItemName = "remove")]
-        public WindowsServiceWatchersSection WindowsServiceWatchers
+        public WatchersSection Watchers
         {
             get
             {
-                object o = this["WindowsServiceWatchersSection"];
-                return o as WindowsServiceWatchersSection;
+                object o = this["Watchers"];
+                return o as WatchersSection;
             }
         }
     }

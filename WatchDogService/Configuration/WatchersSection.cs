@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace WatchDogService.Configuration
 {
-    public class WindowsServiceWatchersSection : ConfigurationElementCollection
+    public class WatchersSection : ConfigurationElementCollection
     {
-        public WindowsServiceWatcherSection this[int index]
+        public WatcherSection this[int index]
         {
             get
             {
-                return base.BaseGet(index) as WindowsServiceWatcherSection;
+                return base.BaseGet(index) as WatcherSection;
             }
             set
             {
@@ -25,9 +25,9 @@ namespace WatchDogService.Configuration
             }
         }
 
-        public new WindowsServiceWatcherSection this[string responseString]
+        public new WatcherSection this[string responseString]
         {
-            get { return (WindowsServiceWatcherSection)BaseGet(responseString); }
+            get { return (WatcherSection)BaseGet(responseString); }
             set
             {
                 if (BaseGet(responseString) != null)
@@ -40,17 +40,17 @@ namespace WatchDogService.Configuration
 
         protected override ConfigurationElement CreateNewElement()
         {
-            return new WindowsServiceWatcherSection();
+            return new WatcherSection();
         }
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((WindowsServiceWatcherSection)element).Name;
+            return ((WatcherSection)element).Name;
         }
 
-        public void Remove(WindowsServiceWatcherSection ovenConfig)
+        public void Remove(WatcherSection watcher)
         {
-            BaseRemove(ovenConfig.Name);
+            BaseRemove(watcher.Name);
         }
 
         public void RemoveAt(int index)

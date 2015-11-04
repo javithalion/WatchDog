@@ -7,8 +7,8 @@ namespace WatchDogService.Watchers
     {
         private readonly string _serviceToMonitor;
 
-        public WindowsServiceWatcher(string serviceNameToMonitor, int refreshPeriodInSeconds, string name = "WindowsServiceWatcher")
-            : base(refreshPeriodInSeconds, name)
+        public WindowsServiceWatcher(string serviceNameToMonitor, int refreshTimeInSeconds, string name = "WindowsServiceWatcher")
+            : base(refreshTimeInSeconds, name)
         {
             _serviceToMonitor = serviceNameToMonitor;
         }

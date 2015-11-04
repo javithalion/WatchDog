@@ -7,18 +7,18 @@ namespace WatchDogService.ContingenceActions
     public class LogFileAction : ContingenceAction
     {
         private readonly string _fileName;
-        private readonly string _formatString;
+        private readonly string _messageLayout;
 
-        public LogFileAction(StatusWatcher statusWatcher, string fileName, string formatString, string name = "LogFileAction")
+        public LogFileAction(StatusWatcher statusWatcher, string fileName, string messageLayout, string name = "LogFileAction")
             :base(statusWatcher,name)
         {
             _fileName = fileName;
-            _formatString = formatString;
+            _messageLayout = messageLayout;
         }
 
         public override void Execute()
         {
-            var result = _formatString.ToLower();
+            var result = _messageLayout.ToLower();
             result = result.Replace(@"%date", DateTime.Now.ToString());
             result = result.Replace(@"%name", _statusWatcher.GetWathcDescription());
 
