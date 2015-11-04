@@ -42,11 +42,11 @@ namespace WatchDog.Services.Implementations
         private StatusWatcher BuildWatcherFromConfiguration(WatcherSection configWatcher)
         {
             var type = Type.GetType(configWatcher.Type);
-            ConstructorInfo ctor = type.GetConstructors().FirstOrDefault();
+            ConstructorInfo constructorInformation = type.GetConstructors().FirstOrDefault();
 
             var listOfParameters = new List<object>();
             var properties = configWatcher.GetType().GetProperties();
-            foreach (var parameter in ctor.GetParameters())
+            foreach (var parameter in constructorInformation.GetParameters())
             {
                 listOfParameters.Add(
                     Convert.ChangeType(
@@ -69,13 +69,13 @@ namespace WatchDog.Services.Implementations
                 var contingenceActionFromConfig = configWatcher.ContingenceActions[j];
 
                 var type = Type.GetType(contingenceActionFromConfig.Type);
-                var ctor = type.GetConstructors().FirstOrDefault();
+                var constructorInformation = type.GetConstructors().FirstOrDefault();
 
                 listOfParameters = new List<object>();
                 listOfParameters.Add(watcher);
 
                 properties = contingenceActionFromConfig.GetType().GetProperties();
-                foreach (var parameter in ctor.GetParameters())
+                foreach (var parameter in constructorInformation.GetParameters())
                 {
                     if (parameter.Name.ToLower() != "statuswatcher")
                         listOfParameters.Add(
