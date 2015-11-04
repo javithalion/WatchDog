@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WatchDogService.Watchers;
 
 namespace WatchDogService.ContingenceActions
@@ -11,21 +7,24 @@ namespace WatchDogService.ContingenceActions
     public class LogFileAction : ContingenceAction
     {
         private readonly string _fileName;
+        private readonly string _formatString;
 
-        public LogFileAction(StatusWatcher statusWatcher, string fileName, string name = "LogFileAction")
+        public LogFileAction(StatusWatcher statusWatcher, string fileName, string formatString, string name = "LogFileAction")
             :base(statusWatcher,name)
         {
-            this._fileName = fileName;
+            _fileName = fileName;
+            _formatString = formatString;
         }
 
         public override void Execute()
         {
+            var result = _formatString.ToLower();
+            result = result.Replace(@"%date", DateTime.Now.ToString());
+            result = result.Replace(@"%name", _statusWatcher.GetWathcDescription());
+
             using (var sw = new StreamWriter(_fileName, true))
             {
-                sw.WriteLine(
-                            string.Format("{0}: {1} is not working",
-                            DateTime.Now.ToString(),
-                            _statusWatcher.GetWathcDescription()));
+                sw.WriteLine(result);
             }
         }
     }

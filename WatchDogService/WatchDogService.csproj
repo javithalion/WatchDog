@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ContingenceActionSection.cs" />
+    <Compile Include="Configuration\ContingenceActionsSection.cs" />
+    <Compile Include="Configuration\WatchDogConfigurationSection.cs" />
+    <Compile Include="Configuration\WatcherSection.cs" />
+    <Compile Include="Configuration\WatchersSection.cs" />
     <Compile Include="ContingenceActions\ConsoleAction.cs" />
     <Compile Include="ContingenceActions\ContingenceAction.cs" />
     <Compile Include="ContingenceActions\LogFileAction.cs" />

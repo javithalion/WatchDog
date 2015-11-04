@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WatchDogService.Watchers;
 using WatchDogService.Services.Interfaces;
 using WatchDogService.ContingenceActions;
+using WatchDogService.Configuration;
 
 namespace WatchDogService.Services.Implementations
 {
@@ -13,35 +14,52 @@ namespace WatchDogService.Services.Implementations
     {
         public IEnumerable<StatusWatcher> GetAllWatchers()
         {
-           
 
-            var wsw1 = new WindowsServiceWatcher("Temas", 30);
+            var result = new List<StatusWatcher>();
+            var config = (WatchDogConfigurationSection)System.Configuration.ConfigurationManager.GetSection("watchDogConfigurationSection");
 
-            var logAction = new LogFileAction(wsw1, @"C:\Users\jcerve14\Desktop\log1.txt");
+            WindowsServiceWatcher serviceWatcherAux;
+            ContingenceAction contingenceActionAux;
+            for (int i = 0; i < config.WindowsServiceWatchers.Count; i++)
+            {
+                serviceWatcherAux =
+                    new WindowsServiceWatcher(
+                    config.WindowsServiceWatchers[i].ServiceName,
+                    Convert.ToInt32(config.WindowsServiceWatchers[i].RefreshTimeInSeconds),
+                    config.WindowsServiceWatchers[i].Name);
 
-            wsw1.AddContingenceAction(logAction);
+                for (int j = 0; j < config.WindowsServiceWatchers[i].ContingenceActions.Count; j++)
+                {
+                    var contingenceActionFromConfig = config.WindowsServiceWatchers[i].ContingenceActions[j];
 
-            var wsw2 = new WindowsServiceWatcher("asdasd", 10);
+                    switch (contingenceActionFromConfig.Type)
+                    {
+                        case "LogFileAction":
+                            contingenceActionAux = CreateLogAction(serviceWatcherAux, contingenceActionFromConfig);
+                            break;
+                        case "ConsoleAction":
+                            contingenceActionAux = CreateConsoleAction(serviceWatcherAux, contingenceActionFromConfig);
+                            break;
+                        default:
+                            throw new Exception();
+                    }
 
-            var logAction2 = new LogFileAction(wsw2, @"C:\Users\jcerve14\Desktop\log2.txt");
-            var consoleAction2 = new ConsoleAction(wsw2);
+                    serviceWatcherAux.AddContingenceAction(contingenceActionAux);
+                }
+                result.Add(serviceWatcherAux);
+            }
 
-            wsw2.AddContingenceAction(logAction2);
-            wsw2.AddContingenceAction(consoleAction2);
-
-            var wsw3 = new WindowsServiceWatcher("jejejeje", 15);
-
-            var logAction3 = new LogFileAction(wsw3, @"C:\Users\jcerve14\Desktop\log3.txt");
-            var consoleAction3 = new ConsoleAction(wsw3);
-
-            wsw3.AddContingenceAction(logAction3);
-            wsw3.AddContingenceAction(consoleAction3);
-
-
-
-            return new List<StatusWatcher>() { wsw1, wsw2, wsw3 };
+            return result;
         }
 
+        private static ContingenceAction CreateConsoleAction(WindowsServiceWatcher serviceWatcherAux, ContingenceActionSection contingenceActionFromConfig)
+        {
+            return new ConsoleAction(serviceWatcherAux, contingenceActionFromConfig.MessageLayout, contingenceActionFromConfig.Name);
+        }
 
+        private static ContingenceAction CreateLogAction(WindowsServiceWatcher serviceWatcherAux, ContingenceActionSection contingenceActionFromConfig)
+        {
+            return new LogFileAction(serviceWatcherAux, contingenceActionFromConfig.FileName, contingenceActionFromConfig.MessageLayout, contingenceActionFromConfig.Name);
+        }
     }
 }
