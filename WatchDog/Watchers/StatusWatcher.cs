@@ -5,7 +5,7 @@ using WatchDog.ContingenceActions;
 
 namespace WatchDog.Watchers
 {
-    public abstract class StatusWatcher
+    public abstract class StatusWatcher : IDisposable
     {
         public Guid Identifier { get; private set; }
         public string Name { get; private set; }
@@ -24,6 +24,10 @@ namespace WatchDog.Watchers
             RefreshPeriod = TimeSpan.FromSeconds(refreshPeriodInSeconds);
             CreationDate = DateTime.Now;
         }
+
+        protected abstract Status CheckStatus(object state);
+
+        public abstract string GetWathcDescription();
 
         public void Start()
         {
@@ -52,13 +56,22 @@ namespace WatchDog.Watchers
             {
                 AddContingenceAction(newAction);
             }
+        }     
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-
-        protected abstract Status CheckStatus(object state);
-        public abstract string GetWathcDescription();
-
-
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _monitorTimer.Dispose();
+                _monitorTimer = null;                
+            }           
+        }
     }
 
     public enum Status
