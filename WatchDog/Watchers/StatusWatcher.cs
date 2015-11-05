@@ -16,7 +16,7 @@ namespace WatchDog.Watchers
         public Status Status { get; private set; }
 
         private Timer _monitorTimer;
-        private ICollection<Actions.Action> _contingenceActions = new List<Actions.Action>();
+        private ICollection<Actions.Action> _actions = new List<Actions.Action>();
 
         public StatusWatcher(int refreshPeriodInSeconds, string name = "Watcher")
         {
@@ -36,23 +36,23 @@ namespace WatchDog.Watchers
                     Status = CheckStatus(e);
                     LastCheck = DateTime.Now;
 
-                    foreach (var action in _contingenceActions.Where(x => x.TriggerWhen == Status))
+                    foreach (var action in _actions.Where(x => x.TriggerWhen == Status))
                         action.Execute();
                 });
 
             _monitorTimer.Change(1000, (int)RefreshPeriod.TotalMilliseconds);
         }
 
-        public void AddContingenceAction(Actions.Action action)
+        public void AddAction(Actions.Action action)
         {
-            _contingenceActions.Add(action);
+            _actions.Add(action);
         }
 
-        public void AddContingenceActions(IList<Actions.Action> actionsForWatcher)
+        public void AddActions(IList<Actions.Action> actionsForWatcher)
         {
             foreach (var newAction in actionsForWatcher)
             {
-                AddContingenceAction(newAction);
+                AddAction(newAction);
             }
         }
 
@@ -67,10 +67,10 @@ namespace WatchDog.Watchers
             if (disposing)
             {
                 _monitorTimer.Dispose();
-                _contingenceActions.Clear();
+                _actions.Clear();
 
                 _monitorTimer = null;
-                _contingenceActions = null;
+                _actions = null;
             }
         }
     }

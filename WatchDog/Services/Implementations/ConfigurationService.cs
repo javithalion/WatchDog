@@ -27,7 +27,7 @@ namespace WatchDog.Services.Implementations
                     var watcher = BuildWatcherFromConfiguration(configWatcher);
 
                     var actionsForWatcher = BuildActionsForWatcher(watcher, configWatcher);
-                    watcher.AddContingenceActions(actionsForWatcher);
+                    watcher.AddActions(actionsForWatcher);
 
                     result.Add(watcher);
                 }
