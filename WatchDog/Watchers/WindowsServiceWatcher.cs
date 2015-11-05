@@ -11,12 +11,7 @@ namespace WatchDog.Watchers
             : base(refreshTimeInSeconds, name)
         {
             _serviceToMonitor = serviceNameToMonitor;
-        }
-
-        public override string GetWathcDescription()
-        {
-            return string.Format("{0} Windows Service", _serviceToMonitor);
-        }
+        }        
 
         protected override Status CheckStatus(object state)
         {

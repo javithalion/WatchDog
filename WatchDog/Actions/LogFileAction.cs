@@ -2,15 +2,15 @@
 using System.IO;
 using WatchDog.Watchers;
 
-namespace WatchDog.ContingenceActions
+namespace WatchDog.Actions
 {
-    public class LogFileAction : ContingenceAction
+    public class LogFileAction : Action
     {
         private readonly string _fileName;
         private readonly string _messageLayout;
 
-        public LogFileAction(StatusWatcher statusWatcher, string fileName, string messageLayout, string name = "LogFileAction")
-            :base(statusWatcher,name)
+        public LogFileAction(StatusWatcher statusWatcher, string fileName, string messageLayout, Status triggerWhen, string name = "LogFileAction")
+            : base(statusWatcher, triggerWhen, name)
         {
             _fileName = fileName;
             _messageLayout = messageLayout;
@@ -18,9 +18,9 @@ namespace WatchDog.ContingenceActions
 
         public override void Execute()
         {
-            var result = _messageLayout.ToLower();
+            var result = _messageLayout;
             result = result.Replace(@"%date", DateTime.Now.ToString());
-            result = result.Replace(@"%name", _statusWatcher.GetWathcDescription());
+            result = result.Replace(@"%name", _statusWatcher.Name);
 
             using (var sw = new StreamWriter(_fileName, true))
             {

@@ -42,14 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ContingenceActionSection.cs" />
-    <Compile Include="Configuration\ContingenceActionsSection.cs" />
+    <Compile Include="Configuration\ActionSection.cs" />
+    <Compile Include="Configuration\ActionsSection.cs" />
     <Compile Include="Configuration\WatchDogConfigurationSection.cs" />
     <Compile Include="Configuration\WatcherSection.cs" />
     <Compile Include="Configuration\WatchersSection.cs" />
-    <Compile Include="ContingenceActions\ConsoleAction.cs" />
-    <Compile Include="ContingenceActions\ContingenceAction.cs" />
-    <Compile Include="ContingenceActions\LogFileAction.cs" />
+    <Compile Include="Actions\ConsoleAction.cs" />
+    <Compile Include="Actions\Action.cs" />
+    <Compile Include="Actions\LogFileAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Implementations\ConfigurationService.cs" />
     <Compile Include="Services\Interfaces\IConfigurationService.cs" />

@@ -2,13 +2,13 @@
 
 namespace WatchDog.Configuration
 {
-    public class ContingenceActionsSection : ConfigurationElementCollection
+    public class ActionsSection : ConfigurationElementCollection
     {
-        public ContingenceActionSection this[int index]
+        public ActionSection this[int index]
         {
             get
             {
-                return base.BaseGet(index) as ContingenceActionSection;
+                return base.BaseGet(index) as ActionSection;
             }
             set
             {
@@ -20,9 +20,9 @@ namespace WatchDog.Configuration
             }
         }
 
-        public new ContingenceActionSection this[string responseString]
+        public new ActionSection this[string responseString]
         {
-            get { return (ContingenceActionSection)BaseGet(responseString); }
+            get { return (ActionSection)BaseGet(responseString); }
             set
             {
                 if (BaseGet(responseString) != null)
@@ -35,27 +35,13 @@ namespace WatchDog.Configuration
 
         protected override ConfigurationElement CreateNewElement()
         {
-            return new ContingenceActionSection();
+            return new ActionSection();
         }
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((ContingenceActionSection)element).Name;
+            return ((ActionSection)element).Name;
         }
-
-        public void Remove(ContingenceActionSection ovenConfig)
-        {
-            BaseRemove(ovenConfig.Name);
-        }
-
-        public void RemoveAt(int index)
-        {
-            BaseRemoveAt(index);
-        }
-
-        public void Remove(string name)
-        {
-            BaseRemove(name);
-        }
+        
     }
 }

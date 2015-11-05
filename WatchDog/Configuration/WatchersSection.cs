@@ -42,20 +42,6 @@ namespace WatchDog.Configuration
         {
             return ((WatcherSection)element).Name;
         }
-
-        public void Remove(WatcherSection watcher)
-        {
-            BaseRemove(watcher.Name);
-        }
-
-        public void RemoveAt(int index)
-        {
-            BaseRemoveAt(index);
-        }
-
-        public void Remove(string name)
-        {
-            BaseRemove(name);
-        }
+      
     }
 }

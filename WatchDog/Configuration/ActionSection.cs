@@ -2,7 +2,7 @@
 
 namespace WatchDog.Configuration
 {
-    public class ContingenceActionSection : ConfigurationSection
+    public class ActionSection : ConfigurationSection
     {
         [ConfigurationProperty("Name", DefaultValue = "Watcher", IsRequired = true, IsKey = true)]
         public string Name
@@ -32,6 +32,13 @@ namespace WatchDog.Configuration
             set { this["MessageLayout"] = value; }
         }
 
+        [ConfigurationProperty("TriggerWhen", IsRequired = true, IsKey = false)]
+        public Watchers.Status TriggerWhen
+        {
+            get { return (Watchers.Status)System.Enum.Parse(typeof(Watchers.Status), this["TriggerWhen"].ToString()); }
+            set { this["TriggerWhen"] = value; }
+        }
+
     }
-   
+
 }

@@ -25,17 +25,15 @@ namespace WatchDog.Configuration
             set { this["Type"] = value; }
         }
 
-        [System.Configuration.ConfigurationProperty("ContingenceActionsSection", IsDefaultCollection = false)]
-        [ConfigurationCollection(typeof(ContingenceActionsSection),
-        AddItemName = "Action",
-        ClearItemsName = "clearAction",
-        RemoveItemName = "removeAction")]
-        public ContingenceActionsSection ContingenceActions
+        [System.Configuration.ConfigurationProperty("Actions", IsDefaultCollection = false)]
+        [ConfigurationCollection(typeof(ActionsSection),
+        AddItemName = "Action")]
+        public ActionsSection ContingenceActions
         {
             get
             {
-                object o = this["ContingenceActionsSection"];
-                return o as ContingenceActionsSection;
+                object o = this["Actions"];
+                return o as ActionsSection;
             }
         }
 

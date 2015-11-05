@@ -16,12 +16,7 @@ namespace WatchDog.Watchers
             : base(refreshTimeInSeconds, name)
         {
             _hostAddress = hostAddress;
-        }
-
-        public override string GetWathcDescription()
-        {
-            return string.Format("'{0}' host", _hostAddress);
-        }
+        }     
 
         protected override Status CheckStatus(object state)
         {

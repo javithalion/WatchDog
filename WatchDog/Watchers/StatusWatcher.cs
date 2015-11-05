@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using WatchDog.ContingenceActions;
+using WatchDog.Actions;
+using System.Linq;
 
 namespace WatchDog.Watchers
 {
@@ -15,7 +16,7 @@ namespace WatchDog.Watchers
         public Status Status { get; private set; }
 
         private Timer _monitorTimer;
-        private ICollection<ContingenceAction> _contingenceActions = new List<ContingenceAction>();
+        private ICollection<Actions.Action> _contingenceActions = new List<Actions.Action>();
 
         public StatusWatcher(int refreshPeriodInSeconds, string name = "Watcher")
         {
@@ -27,8 +28,6 @@ namespace WatchDog.Watchers
 
         protected abstract Status CheckStatus(object state);
 
-        public abstract string GetWathcDescription();
-
         public void Start()
         {
             _monitorTimer = new Timer(
@@ -37,26 +36,25 @@ namespace WatchDog.Watchers
                     Status = CheckStatus(e);
                     LastCheck = DateTime.Now;
 
-                    if (Status != Status.Working)
-                        foreach (var action in _contingenceActions)
-                            action.Execute();
+                    foreach (var action in _contingenceActions.Where(x => x.TriggerWhen == Status))
+                        action.Execute();
                 });
 
             _monitorTimer.Change(1000, (int)RefreshPeriod.TotalMilliseconds);
         }
 
-        public void AddContingenceAction(ContingenceAction action)
+        public void AddContingenceAction(Actions.Action action)
         {
             _contingenceActions.Add(action);
         }
 
-        public void AddContingenceActions(IList<ContingenceAction> actionsForWatcher)
+        public void AddContingenceActions(IList<Actions.Action> actionsForWatcher)
         {
             foreach (var newAction in actionsForWatcher)
             {
                 AddContingenceAction(newAction);
             }
-        }     
+        }
 
         public void Dispose()
         {
@@ -69,8 +67,11 @@ namespace WatchDog.Watchers
             if (disposing)
             {
                 _monitorTimer.Dispose();
-                _monitorTimer = null;                
-            }           
+                _contingenceActions.Clear();
+
+                _monitorTimer = null;
+                _contingenceActions = null;
+            }
         }
     }
 

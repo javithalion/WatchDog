@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WatchDog.Watchers;
 using WatchDog.Services.Interfaces;
-using WatchDog.ContingenceActions;
+using WatchDog.Actions;
 using WatchDog.Configuration;
 using System.Reflection;
 using System.Globalization;
@@ -58,9 +58,9 @@ namespace WatchDog.Services.Implementations
             return Activator.CreateInstance(type, listOfParameters.ToArray()) as StatusWatcher;
         }
 
-        private IList<ContingenceAction> BuildActionsForWatcher(StatusWatcher watcher, WatcherSection configWatcher)
+        private IList<Actions.Action> BuildActionsForWatcher(StatusWatcher watcher, WatcherSection configWatcher)
         {
-            var result = new List<ContingenceAction>();
+            var result = new List<Actions.Action>();
             IList<object> listOfParameters;
             IList<PropertyInfo> properties;
 
@@ -86,7 +86,7 @@ namespace WatchDog.Services.Implementations
                             );
                 }
 
-                ContingenceAction action = Activator.CreateInstance(type, listOfParameters.ToArray()) as ContingenceAction;
+                Actions.Action action = Activator.CreateInstance(type, listOfParameters.ToArray()) as Actions.Action;
                 result.Add(action);
             }
             return result;

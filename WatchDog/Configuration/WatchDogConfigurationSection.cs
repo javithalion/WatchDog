@@ -7,9 +7,7 @@ namespace WatchDog.Configuration
 
         [System.Configuration.ConfigurationProperty("Watchers", IsDefaultCollection = false)]
         [ConfigurationCollection(typeof(WatchersSection),
-        AddItemName = "Watcher",
-        ClearItemsName = "clearWatcher",
-        RemoveItemName = "removeWatcher")]
+        AddItemName = "Watcher")]
         public WatchersSection Watchers
         {
             get
